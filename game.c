@@ -1,4 +1,6 @@
 #include "system.h"
+#include <stdio.h>
+#include <string.h>
 #include "pacer.h"
 #include "tinygl.h"
 #include "../fonts/font5x7_1.h"
@@ -7,10 +9,9 @@
 #include "button.h"
 #include "stdbool.h"
 
-//Useful constants below
 #define PACER_RATE 500
 #define MESSAGE_RATE 20
-
+#define OPTIONS
 
 void display_character (char character)
 {
@@ -33,11 +34,11 @@ void setup_all(void)
     pacer_init(PACER_RATE);
 }
 
-int main (void)
+void inital_loop(void)
 {
-    setup_all();
-    tinygl_text("Rock Paper Scissors 2: Electric Boogaloo\0");
+    tinygl_text("Press when ready!\0");
     bool ready = false;
+    bool player_ready = false;
     while(!ready)
     {
         pacer_wait();
@@ -45,21 +46,35 @@ int main (void)
 
         navswitch_update();
         if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
-            ir_uart_putc('S');
-        }
-
-        if (ir_uart_read_ready_p()) {
-            if (ir_uart_getc() == 'S') {
-                ready = true;
-                ir_uart_putc('S');
-           }
+            ir_uart_putc('1');
+            ready = true;
         }
     }
 
-    char options[] = "RPS";
+    tinygl_text("Waiting for player\0");
+    while (!player_ready)
+    {
+        pacer_wait();
+        tinygl_update();
+        if (ir_uart_read_ready_p()) {
+            if (ir_uart_getc() == '1') {
+                player_ready = true;
+            }
+        }
+    }
+
+}
+
+
+void selection_loop(char* other_selection)
+{
+    const char options[] = "RPS";
     int counter = 0;
     display_character(options[counter]);
-    while(1)
+    bool transmitted = false;
+    bool ready = false;
+    char received = '\0';
+    while(!ready)
     {
         pacer_wait();
         tinygl_update();
@@ -73,8 +88,39 @@ int main (void)
             counter = (counter + 2) % 3; // Same as -1 mod 3
         }
 
-        display_character(options[counter]);
+        if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+            ir_uart_putc(options[counter]);
+            transmitted = true;
+        }
 
+        if (ir_uart_read_ready_p()) {
+            received = ir_uart_getc();
+            if (strchr(options, received) != NULL) { // Checks if recieved character in "RPS"
+                *other_selection = received;
+                received = '\0';
+            }
+        }
+
+        if (*other_selection != '\0' && transmitted) {
+            ready = true;
+        }
+
+        display_character(options[counter]);
+    }
+}
+
+int main (void)
+{
+    setup_all();
+    inital_loop();
+
+    char other_selection = '\0';
+    selection_loop(&other_selection);
+    display_character(other_selection);
+    while(1)
+    {
+        continue;
     }
     return 0;
 }
+
