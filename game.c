@@ -38,6 +38,7 @@ int main (void)
     setup_all();
     tinygl_text("Press when ready!\0");
     bool ready = false;
+    bool player_ready = false;
     while(!ready)
     {
         pacer_wait();
@@ -45,14 +46,20 @@ int main (void)
 
         navswitch_update();
         if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
-            ir_uart_putc('S');
+            ir_uart_putc('1');
+            ready = true;
         }
+    }
 
+    tinygl_text("Waiting for player\0");
+    while (!player_ready)
+    {
+        pacer_wait();
+        tinygl_update();
         if (ir_uart_read_ready_p()) {
-            if (ir_uart_getc() == 'S') {
-                ready = true;
-                ir_uart_putc('S');
-           }
+            if (ir_uart_getc() == '1') {
+                player_ready = true;
+            }
         }
     }
 
