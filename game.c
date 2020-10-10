@@ -66,7 +66,7 @@ void inital_loop(void)
 }
 
 
-void selection_loop(char* other_selection)
+void selection_loop(char* player_selection, char* other_selection)
 {
     const char options[] = "RPS";
     int counter = 0;
@@ -90,6 +90,7 @@ void selection_loop(char* other_selection)
 
         if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
             ir_uart_putc(options[counter]);
+            *player_selection = options[counter];
             transmitted = true;
         }
 
@@ -114,12 +115,14 @@ int main (void)
     setup_all();
     inital_loop();
 
+    char player_selection = '\0';
     char other_selection = '\0';
-    selection_loop(&other_selection);
+    selection_loop(&player_selection, &other_selection);
     display_character(other_selection);
     while(1)
     {
-        continue;
+        pacer_wait();
+        tinygl_update();
     }
     return 0;
 }
