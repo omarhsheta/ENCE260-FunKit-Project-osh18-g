@@ -172,11 +172,15 @@ int main (void)
     inital_loop();
     int score = 0;
 
-    char player_selection = '\0';
-    char other_selection = '\0';
-    selection_loop(&player_selection, &other_selection);
-    display_winner(find_winner(&player_selection, &other_selection), &score);
-    display_score(&score);
+    while (score < MAX_SCORE)
+    {
+        char player_selection = '\0';
+        char other_selection = '\0';
+        selection_loop(&player_selection, &other_selection);
+        display_winner(find_winner(&player_selection, &other_selection), &score);
+        display_score(&score);
+    }
+
     while(1)
     {
         pacer_wait();
