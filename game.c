@@ -135,15 +135,42 @@ int find_winner(char* player_selection, char* other_selection)
     }
 }
 
+void display_winner(int result, int* score)
+{
+    if (result == 2) {
+        display_character('W');
+        *score = *score + 1;
+    } else if (result == 1) {
+        display_character('T');
+    } else {
+        display_character('L');
+    }
+
+    int counter = 0;
+    while(counter < 1000)
+    {
+        pacer_wait();
+        tinygl_update();
+        counter++;
+    }
+}
+
+void display_score(int* score)
+{
+    display_character('0' + *score);
+}
+
 int main (void)
 {
     setup_all();
     inital_loop();
+    int score = 0;
 
     char player_selection = '\0';
     char other_selection = '\0';
     selection_loop(&player_selection, &other_selection);
-    display_character(other_selection);
+    display_winner(find_winner(&player_selection, &other_selection), &score);
+    display_score(&score);
     while(1)
     {
         pacer_wait();
@@ -151,4 +178,3 @@ int main (void)
     }
     return 0;
 }
-
