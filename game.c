@@ -117,18 +117,24 @@ int find_winner(char* player_selection, char* other_selection)
             return 2;
         } else if (*other_selection == 'R') {
             return 1;
+        } else {
+            return 0;
         }
     } else if (*player_selection == 'P') {
         if (*other_selection == 'R') {
             return 2;
         } else if (*other_selection == 'P') {
             return 1;
+        } else {
+            return 0;
         }
     } else if (*player_selection == 'S' && *other_selection == 'P') {
         if (*other_selection == 'P') {
             return 2;
         } else if (*other_selection == 'S') {
             return 1;
+        } else {
+            return 0;
         }
     } else {
         return 0;
