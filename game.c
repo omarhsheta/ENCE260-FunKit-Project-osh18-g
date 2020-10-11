@@ -110,14 +110,26 @@ void selection_loop(char* player_selection, char* other_selection)
     }
 }
 
-bool find_winner(char* player_selection, char* other_selection)
+int find_winner(char* player_selection, char* other_selection)
 {
-    if (*player_selection == 'R' && *other_selection == 'S') {
-        return 1;
-    } else if (*player_selection == 'P' && *other_selection == 'R') {
-        return 1;
+    if (*player_selection == 'R') {
+        if (*other_selection == 'S') {
+            return 2;
+        } else if (*other_selection == 'R') {
+            return 1;
+        }
+    } else if (*player_selection == 'P') {
+        if (*other_selection == 'R') {
+            return 2;
+        } else if (*other_selection == 'P') {
+            return 1;
+        }
     } else if (*player_selection == 'S' && *other_selection == 'P') {
-        return 1;
+        if (*other_selection == 'P') {
+            return 2;
+        } else if (*other_selection == 'S') {
+            return 1;
+        }
     } else {
         return 0;
     }
