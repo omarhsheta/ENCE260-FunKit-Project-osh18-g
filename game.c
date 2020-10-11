@@ -164,6 +164,13 @@ void display_winner(int result, int* score)
 void display_score(int* score)
 {
     display_character('0' + *score);
+    int counter = 0;
+    while(counter < 1000)
+    {
+        pacer_wait();
+        tinygl_update();
+        counter++;
+    }
 }
 
 int main (void)
