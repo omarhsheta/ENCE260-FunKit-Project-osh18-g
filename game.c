@@ -11,7 +11,7 @@
 
 #define PACER_RATE 500
 #define MESSAGE_RATE 20
-#define OPTIONS
+#define MAX_SCORE 10
 
 void display_character (char character)
 {
