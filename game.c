@@ -1,4 +1,6 @@
 #include "system.h"
+#include <stdio.h>
+#include <string.h>
 #include "pacer.h"
 #include "tinygl.h"
 #include "../fonts/font5x7_1.h"
@@ -7,10 +9,9 @@
 #include "button.h"
 #include "stdbool.h"
 
-//Useful constants below
 #define PACER_RATE 500
 #define MESSAGE_RATE 20
-
+#define OPTIONS
 
 void display_character (char character)
 {
@@ -33,9 +34,8 @@ void setup_all(void)
     pacer_init(PACER_RATE);
 }
 
-int main (void)
+void inital_loop(void)
 {
-    setup_all();
     tinygl_text("Press when ready!\0");
     bool ready = false;
     bool player_ready = false;
@@ -63,10 +63,18 @@ int main (void)
         }
     }
 
-    char options[] = "RPS";
+}
+
+
+void selection_loop(char* player_selection, char* other_selection)
+{
+    const char options[] = "RPS";
     int counter = 0;
     display_character(options[counter]);
-    while(1)
+    bool transmitted = false;
+    bool ready = false;
+    char received = '\0';
+    while(!ready)
     {
         pacer_wait();
         tinygl_update();
@@ -80,8 +88,55 @@ int main (void)
             counter = (counter + 2) % 3; // Same as -1 mod 3
         }
 
-        display_character(options[counter]);
+        if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+            ir_uart_putc(options[counter]);
+            *player_selection = options[counter];
+            transmitted = true;
+        }
 
+        if (ir_uart_read_ready_p()) {
+            received = ir_uart_getc();
+            if (strchr(options, received) != NULL) { // Checks if recieved character in "RPS"
+                *other_selection = received;
+                received = '\0';
+            }
+        }
+
+        if (*other_selection != '\0' && transmitted) {
+            ready = true;
+        }
+
+        display_character(options[counter]);
+    }
+}
+
+bool find_winner(char* player_selection, char* other_selection)
+{
+    if (*player_selection == 'R' && *other_selection == 'S') {
+        return 1;
+    } else if (*player_selection == 'P' && *other_selection == 'R') {
+        return 1;
+    } else if (*player_selection == 'S' && *other_selection == 'P') {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int main (void)
+{
+    setup_all();
+    inital_loop();
+
+    char player_selection = '\0';
+    char other_selection = '\0';
+    selection_loop(&player_selection, &other_selection);
+    display_character(other_selection);
+    while(1)
+    {
+        pacer_wait();
+        tinygl_update();
     }
     return 0;
 }
+
