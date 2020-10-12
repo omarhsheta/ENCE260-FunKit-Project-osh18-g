@@ -61,10 +61,10 @@ timer0.o: ../../drivers/avr/timer0.c ../../drivers/avr/bits.h ../../drivers/avr/
 usart1.o: ../../drivers/avr/usart1.c ../../drivers/avr/system.h ../../drivers/avr/usart1.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-game_init.o: game_init.c ../../drivers/avr/system.h ../../drivers/navswitch.h ../../drivers/avr/ir_uart.h ../../drivers/button.h ../../utils/tinygl.h ../../utils/pacer.h
+game_init.o: game_init.c ../../drivers/avr/system.h ../../drivers/navswitch.h ../../drivers/avr/ir_uart.h ../../drivers/button.h ../../utils/tinygl.h ../../utils/pacer.h ../../drivers/led.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-game_logic.o: game_logic.c ../../drivers/avr/system.h ../../drivers/navswitch.h ../../drivers/avr/ir_uart.h ../../drivers/button.h ../../utils/tinygl.h ../../utils/pacer.h
+game_logic.o: game_logic.c ../../drivers/avr/system.h ../../drivers/navswitch.h ../../drivers/avr/ir_uart.h ../../drivers/button.h ../../utils/tinygl.h ../../utils/pacer.h ../../drivers/led.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 

@@ -6,7 +6,7 @@
 
 #define PACER_RATE 500
 #define MESSAGE_RATE 20
-#define MAX_SCORE 5
+#define MAX_SCORE 1
 
 
 int main (void)

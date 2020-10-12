@@ -5,6 +5,7 @@
 #include "button.h"
 #include "tinygl.h"
 #include "pacer.h"
+#include "led.h"
 
 void game_won(int score, int max_score);
 
@@ -52,6 +53,7 @@ void selection_loop(char* player_selection, char* other_selection)
             ir_uart_putc(options[counter]);
             *player_selection = options[counter];
             transmitted = true;
+            led_set(LED1, 1);
         }
 
         if (ir_uart_read_ready_p()) {
@@ -150,6 +152,7 @@ void display_score(int* score)
         tinygl_update();
         counter++;
     }
+    led_set(LED1, 0);
 }
 
 void game_won(int score, int max_score)
@@ -158,6 +161,7 @@ void game_won(int score, int max_score)
     {
         ir_uart_putc('W');
         tinygl_text("You won!\0");
+        led_set(LED1, 1);
     } else {
         tinygl_text("You lost!\0");
     }

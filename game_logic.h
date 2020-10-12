@@ -1,9 +1,11 @@
-#include "system.h"
+#include <stdbool.h>
+#include <string.h>
 #include "navswitch.h"
 #include "ir_uart.h"
 #include "button.h"
-#include "stdbool.h"
 #include "tinygl.h"
+#include "pacer.h"
+#include "led.h"
 
 void display_character (char character);
 
@@ -17,4 +19,4 @@ void display_score(int* score);
 
 void game_won(int score, int max_score);
 
-bool game_lost();
+bool game_lost(void);
