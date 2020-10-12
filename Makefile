@@ -46,6 +46,9 @@ navswitch.o: ../../drivers/navswitch.c ../../drivers/avr/delay.h ../../drivers/a
 font.o: ../../utils/font.c ../../drivers/avr/system.h ../../utils/font.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
+led.o: ../../drivers/led.c ../../drivers/avr/pio.h ../../drivers/avr/system.h ../../drivers/led.h
+	$(CC) -c $(CFLAGS) $< -o $@
+
 pacer.o: ../../utils/pacer.c ../../drivers/avr/system.h ../../drivers/avr/timer.h ../../utils/pacer.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
@@ -66,7 +69,7 @@ game_logic.o: game_logic.c ../../drivers/avr/system.h ../../drivers/navswitch.h 
 
 
 # Link: create ELF output file from object files.
-game.out: game.o pio.o system.o timer.o display.o ledmat.o navswitch.o ir_uart.o prescale.o font.o pacer.o tinygl.o timer0.o usart1.o game_init.o game_logic.o
+game.out: game.o pio.o system.o timer.o display.o ledmat.o navswitch.o ir_uart.o prescale.o font.o led.o pacer.o tinygl.o timer0.o usart1.o game_init.o game_logic.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 
