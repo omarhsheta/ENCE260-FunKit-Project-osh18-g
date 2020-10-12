@@ -111,20 +111,23 @@ int find_winner(char* player_selection, char* other_selection)
  * */
 void display_winner(int result, int* score)
 {
+    char status;
+    if (result == 2) {
+        status = 'W';
+        *score = *score + 1;
+    } else if (result == 1) {
+        status = 'T';
+    } else {
+        status = 'L';
+    }
+
     int counter = 0;
     while(counter < 1000)
     {
-        if (result == 2) {
-            display_character('W');
-            *score = *score + 1;
-        } else if (result == 1) {
-            display_character('T');
-        } else {
-            display_character('L');
-        }
-            pacer_wait();
-            tinygl_update();
-            counter++;
+        display_character(status);
+        pacer_wait();
+        tinygl_update();
+        counter++;
     }
 }
 
