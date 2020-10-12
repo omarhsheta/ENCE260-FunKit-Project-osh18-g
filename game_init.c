@@ -58,6 +58,7 @@ void inital_loop(void)
         if (ir_uart_read_ready_p()) {
             if (ir_uart_getc() == '1') {
                 player_ready = true;
+                led_set(LED1, 0);
             }
         }
     }
