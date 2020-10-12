@@ -147,3 +147,27 @@ void display_score(int* score)
         counter++;
     }
 }
+
+void game_won(int score, int max_score)
+{
+    if (score == max_score)
+    {
+        ir_uart_putc('W');
+        tinygl_text("You won!\0");
+    } else {
+        tinygl_text("You lost!\0");
+    }
+}
+
+bool game_lost()
+{
+    if (ir_uart_read_ready_p()) {
+        if (ir_uart_getc() == 'W') {
+            return 1;
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
+}

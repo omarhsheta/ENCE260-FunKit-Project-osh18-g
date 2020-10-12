@@ -6,7 +6,7 @@
 
 #define PACER_RATE 500
 #define MESSAGE_RATE 20
-#define MAX_SCORE 10
+#define MAX_SCORE 5
 
 
 int main (void)
@@ -22,7 +22,13 @@ int main (void)
         selection_loop(&player_selection, &other_selection);
         display_winner(find_winner(&player_selection, &other_selection), &score);
         display_score(&score);
+        if (game_lost())
+        {
+            break;
+        }
     }
+    game_won(score, MAX_SCORE);
+
 
     while(1)
     {
