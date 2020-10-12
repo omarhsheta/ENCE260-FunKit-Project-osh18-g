@@ -1,3 +1,9 @@
+/**
+ * File:   game_init.c
+ * Author: Omar Sheta (osh18) and George Holden (gah83)
+ * Date:   12 Oct 2020
+ * Descr:  Initializes the game
+ * */
 #include <stdbool.h>
 #include "navswitch.h"
 #include "ir_uart.h"

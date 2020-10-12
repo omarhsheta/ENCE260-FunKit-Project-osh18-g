@@ -1,3 +1,10 @@
+/**
+ * File:   game_logic.c
+ * Author: Omar Sheta (osh18) and George Holden (gah83)
+ * Date:   12 Oct 2020
+ * Descr:  Contains all the logic of the game
+ * */
+
 #include <stdbool.h>
 #include <string.h>
 #include "navswitch.h"
@@ -22,9 +29,13 @@ void display_character (char character)
 }
 
 /**
- * Description:
- * @param player_selection:
- * @param other_selection:
+ * Description: It is a loop where the player selects either Rock, Papper,
+ *              Scissors. Once they select, it locks and blue LED light
+ *              lights up to indicate that the player has made their
+ *              selection, and waits for the other player to make their
+ *              selection.
+ * @param player_selection: The current player's selection
+ * @param other_selection: The other player's selection
  * */
 void selection_loop(char* player_selection, char* other_selection)
 {
@@ -75,10 +86,11 @@ void selection_loop(char* player_selection, char* other_selection)
 }
 
 /**
- * Description:
- * @param player_selection:
- * @param other_selection:
- * @return
+ * Description: Evaluates if the current round is a Win/Loss/Tie
+ * @param player_selection: The current player's selection
+ * @param other_selection: The other player's selection
+ * @return an integer that is either 0,1,2 to indicate whether it is
+ *         Loss/Tie/Win respectively
  * */
 int find_winner(char* player_selection, char* other_selection)
 {
@@ -112,9 +124,10 @@ int find_winner(char* player_selection, char* other_selection)
 }
 
 /**
- * Description:
- * @param result:
- * @param score:
+ * Description: Using find_winner(char* player_selection, char* other_selection),
+ *              it can indicate on LED matrix if it is a Win/Loss/Tie
+ * @param result: find_winner(char* player_selection, char* other_selection) is passed onto it
+ * @param score: the current player's score
  * */
 void display_winner(int result, int* score)
 {
@@ -139,8 +152,8 @@ void display_winner(int result, int* score)
 }
 
 /**
- * Description:
- * @param score
+ * Description: Displays the current player's score
+ * @param score: It is the current player's score
  * */
 void display_score(int* score)
 {
@@ -155,6 +168,12 @@ void display_score(int* score)
     led_set(LED1, 0);
 }
 
+/**
+ * Description: Blocking code where it displays whether the player
+ *              won or lost
+ * @param score: Player's score
+ * @param max_score: Max score for comparison
+ * */
 void game_won(int score, int max_score)
 {
     if (score == max_score)
@@ -172,6 +191,10 @@ void game_won(int score, int max_score)
     }
 }
 
+/**
+ * Description: It is only true if the other player wins
+ * @return returns 0 or 1, only ever returns 1 if the other player wins
+ * */
 bool game_lost(void)
 {
     if (ir_uart_read_ready_p()) {
