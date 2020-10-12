@@ -176,6 +176,7 @@ void display_score(int* score)
  * */
 void game_won(int score, int max_score)
 {
+    tinygl_text_speed_set(10);
     if (score == max_score)
     {
         ir_uart_putc('W');

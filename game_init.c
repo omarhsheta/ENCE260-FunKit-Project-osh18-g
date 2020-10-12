@@ -65,6 +65,7 @@ void inital_loop(void)
             if (ir_uart_getc() == '1') {
                 player_ready = true;
                 led_set(LED1, 0);
+                tinygl_text_speed_set(2);
             }
         }
     }
