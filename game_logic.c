@@ -36,13 +36,14 @@ void selection_loop(char* player_selection, char* other_selection)
         pacer_wait();
         tinygl_update();
         navswitch_update();
+        if (!transmitted) {
+            if (navswitch_push_event_p (NAVSWITCH_NORTH)) {
+                    counter = (counter + 1) % 3;
+            }
 
-        if (navswitch_push_event_p (NAVSWITCH_NORTH)) {
-            counter = (counter + 1) % 3;
-        }
-
-        if (navswitch_push_event_p (NAVSWITCH_SOUTH)) {
-            counter = (counter + 2) % 3; // Same as -1 mod 3
+            if (navswitch_push_event_p (NAVSWITCH_SOUTH)) {
+                counter = (counter + 2) % 3; // Same as -1 mod 3
+            }
         }
 
         if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
