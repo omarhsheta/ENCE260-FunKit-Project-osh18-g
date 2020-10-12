@@ -24,16 +24,9 @@ int main (void)
         display_score(&score);
         if (game_lost())
         {
-            break;
+            game_won(score, MAX_SCORE);
         }
     }
     game_won(score, MAX_SCORE);
-
-
-    while(1)
-    {
-        pacer_wait();
-        tinygl_update();
-    }
     return 0;
 }

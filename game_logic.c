@@ -6,6 +6,8 @@
 #include "tinygl.h"
 #include "pacer.h"
 
+void game_won(int score, int max_score);
+
 /**
  * Description: The function displays an individual character only
  * @param character:
@@ -57,6 +59,8 @@ void selection_loop(char* player_selection, char* other_selection)
             if (strchr(options, received) != NULL) { // Checks if recieved character in "RPS"
                 *other_selection = received;
                 received = '\0';
+            } else if (received == 'W') {
+                game_won(0, 5);
             }
         }
 
@@ -157,9 +161,14 @@ void game_won(int score, int max_score)
     } else {
         tinygl_text("You lost!\0");
     }
+    while(1)
+    {
+        pacer_wait();
+        tinygl_update();
+    }
 }
 
-bool game_lost()
+bool game_lost(void)
 {
     if (ir_uart_read_ready_p()) {
         if (ir_uart_getc() == 'W') {
