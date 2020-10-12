@@ -5,6 +5,7 @@
 #include "../fonts/font5x7_1.h"
 #include "tinygl.h"
 #include "pacer.h"
+#include "led.h"
 
 /**
  * Description: this void function sets up all the necessary tools for
@@ -18,6 +19,8 @@ void setup_all(int message_rate, int pacer_rate)
     tinygl_init(pacer_rate);
     navswitch_init();
     ir_uart_init();
+    led_init();
+    led_set(LED1, 0);
 
     tinygl_font_set(&font5x7_1);
     tinygl_text_speed_set(message_rate);
@@ -47,6 +50,7 @@ void inital_loop(void)
     }
 
     tinygl_text("Waiting for player\0");
+    led_set(LED1, 1);
     while (!player_ready)
     {
         pacer_wait();
