@@ -143,8 +143,6 @@ int find_winner(char* player_selection, char* other_selection)
 
 void display_winner(int result, int* score)
 {
-    pacer_wait();
-    tinygl_update();
     if (result == 2) {
         display_character('W');
         *score = *score + 1;
@@ -165,7 +163,7 @@ void display_winner(int result, int* score)
 
 void display_score(int* score)
 {
-    display_character('%s', *score);
+    display_character('0' + *score);
     int counter = 0;
     while(counter < 1000)
     {
