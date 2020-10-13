@@ -1,4 +1,4 @@
-Authors: Omar Sheta (osh18) and George Holden (gah83)
+Authors: Omar Sheta (osh18) and George Holden (gah83) \n
 Date: 13 Oct 2020
 Description: Rock, Paper, Scissors game
 
