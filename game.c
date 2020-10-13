@@ -13,7 +13,7 @@
 /* Constants*/
 #define PACER_RATE 500
 #define MESSAGE_RATE 20
-#define MAX_SCORE 5
+#define MAX_SCORE 4
 
 /* The game runs below */
 int main (void)
@@ -27,14 +27,10 @@ int main (void)
     {
         char player_selection = '\0';
         char other_selection = '\0';
-        selection_loop(&player_selection, &other_selection); //Where the player selects Rock, Papper, or Scissors
+        selection_loop(&player_selection, &other_selection); //Where the player selects Rock, Paper, or Scissors
         display_winner(find_winner(&player_selection, &other_selection), &score); //Displays whether it is a Win/Loss/Tie for this round
         display_score(&score); //Displays the current score
-        if (game_lost())
-        {
-            game_won(score, MAX_SCORE); //If the player loses to the 2nd player, they always go to that function
-        }
     }
-    game_won(score, MAX_SCORE);
+    game_won();
     return 0;
 }

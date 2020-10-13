@@ -1,10 +1,10 @@
 /**
  * File:   game_logic.c
  * Author: Omar Sheta (osh18) and George Holden (gah83)
- * Date:   12 Oct 2020
- * Descr:  Contains all the logic of the game
+ * Date:   13 Oct 2020
+ * Descr:  Contains functions which manage the calculation of game logic
+ * 		   and handle input / output.
  * */
-
 #include <stdbool.h>
 #include <string.h>
 #include "navswitch.h"
@@ -14,7 +14,7 @@
 #include "pacer.h"
 #include "led.h"
 
-void game_won(int score, int max_score);
+void game_won(void);
 
 /**
  * Description: The function displays an individual character only
@@ -47,6 +47,16 @@ void selection_loop(char* player_selection, char* other_selection)
     char received = '\0';
     while(!ready)
     {
+		if (ir_uart_read_ready_p()) {
+            received = ir_uart_getc();
+            if (strchr(options, received) != NULL) { // Checks if recieved character in "RPS"
+                *other_selection = received;
+                received = '\0';
+            } else if (received == 'L') {
+                game_lost();
+            }
+        }
+        
         pacer_wait();
         tinygl_update();
         navswitch_update();
@@ -67,16 +77,6 @@ void selection_loop(char* player_selection, char* other_selection)
             led_set(LED1, 1);
         }
 
-        if (ir_uart_read_ready_p()) {
-            received = ir_uart_getc();
-            if (strchr(options, received) != NULL) { // Checks if recieved character in "RPS"
-                *other_selection = received;
-                received = '\0';
-            } else if (received == 'W') {
-                game_won(0, 5);
-            }
-        }
-
         if (*other_selection != '\0' && transmitted) {
             ready = true;
         }
@@ -87,9 +87,9 @@ void selection_loop(char* player_selection, char* other_selection)
 
 /**
  * Description: Evaluates if the current round is a Win/Loss/Tie
- * @param player_selection: The current player's selection
- * @param other_selection: The other player's selection
- * @return an integer that is either 0,1,2 to indicate whether it is
+ * @param player_selection: The current player's selection (in "RPS")
+ * @param other_selection: The other player's selection (in "RPS")
+ * @return an integer that is either 0,1 or 2 to indicate a
  *         Loss/Tie/Win respectively
  * */
 int find_winner(char* player_selection, char* other_selection)
@@ -124,10 +124,12 @@ int find_winner(char* player_selection, char* other_selection)
 }
 
 /**
- * Description: Using find_winner(char* player_selection, char* other_selection),
- *              it can indicate on LED matrix if it is a Win/Loss/Tie
- * @param result: find_winner(char* player_selection, char* other_selection) is passed onto it
- * @param score: the current player's score
+ * Description: Displays the result of the round as output and updates
+ * 				the player's score if required.
+ * @param result: an integer 0, 1 or 2 to represent a Loss, Tie or Win.
+ * 				  Same as output from find_winner.
+ * @param score: A pointer to the player's total score, updated in place 
+ * 				 where appropriate.
  * */
 void display_winner(int result, int* score)
 {
@@ -152,8 +154,10 @@ void display_winner(int result, int* score)
 }
 
 /**
- * Description: Displays the current player's score
- * @param score: It is the current player's score
+ * Description: Displays the current player's score as output. 
+ * 				Assumed that score <= MAX_SCORE < 10 so that 
+ * 				'0' + *score gives the correct character.
+ * @param score: A pointer to the score value to be displayed
  * */
 void display_score(int* score)
 {
@@ -169,22 +173,14 @@ void display_score(int* score)
 }
 
 /**
- * Description: Blocking code where it displays whether the player
- *              won or lost
- * @param score: Player's score
- * @param max_score: Max score for comparison
+ * Description: Endlessly displays a victory message
  * */
-void game_won(int score, int max_score)
+void game_won(void)
 {
     tinygl_text_speed_set(10);
-    if (score == max_score)
-    {
-        ir_uart_putc('W');
-        tinygl_text("You won!\0");
-        led_set(LED1, 1);
-    } else {
-        tinygl_text("You lost!\0");
-    }
+	ir_uart_putc('L');
+	tinygl_text("You won!\0");
+	led_set(LED1, 1);
     while(1)
     {
         pacer_wait();
@@ -193,18 +189,15 @@ void game_won(int score, int max_score)
 }
 
 /**
- * Description: It is only true if the other player wins
- * @return returns 0 or 1, only ever returns 1 if the other player wins
+ * Description: Endlessly displays a defeat message
  * */
-bool game_lost(void)
+void game_lost(void)
 {
-    if (ir_uart_read_ready_p()) {
-        if (ir_uart_getc() == 'W') {
-            return 1;
-        } else {
-            return 0;
-        }
-    } else {
-        return 0;
+    tinygl_text_speed_set(10);
+    tinygl_text("You lost!\0");
+    while(1)
+    {
+        pacer_wait();
+        tinygl_update();
     }
 }
