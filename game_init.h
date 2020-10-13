@@ -15,15 +15,14 @@
 #include "led.h"
 
 /**
- * Description: this void function sets up all the necessary tools for
- *              this Rock, Papper, Scissors game
- * @param message_rate: selects the rate of the messages
- * @param pacer_rate: selects the pacer's rate
+ * Description: this function initialises all other modules used throughout
+ *              the program and sets some basic tinygl options.
+ * @param message_rate: an integer to be passed as the tinygl_text_speed
+ * @param pacer_rate: an integer used to set the pacer rate
  * */
 void setup_all(int message_rate, int pacer_rate);
 
 /**
- * Description: The start up of the game. When player is ready, the player
- *              waits for the 2nd player to be ready
+ * Description: This function handles the start up phase of the game
  * */
 void inital_loop(void);

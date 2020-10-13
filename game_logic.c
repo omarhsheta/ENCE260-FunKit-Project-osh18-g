@@ -3,7 +3,7 @@
  * Author: Omar Sheta (osh18) and George Holden (gah83)
  * Date:   13 Oct 2020
  * Descr:  Contains functions which manage the calculation of game logic
- * 		   and handle input / output.
+ *         and handle input / output.
  * */
 #include <stdbool.h>
 #include <string.h>
@@ -29,7 +29,7 @@ void display_character (char character)
 }
 
 /**
- * Description: It is a loop where the player selects either Rock, Papper,
+ * Description: It is a loop where the player selects either Rock, Paper,
  *              Scissors. Once they select, it locks and blue LED light
  *              lights up to indicate that the player has made their
  *              selection, and waits for the other player to make their
@@ -47,7 +47,7 @@ void selection_loop(char* player_selection, char* other_selection)
     char received = '\0';
     while(!ready)
     {
-		if (ir_uart_read_ready_p()) {
+        if (ir_uart_read_ready_p()) {
             received = ir_uart_getc();
             if (strchr(options, received) != NULL) { // Checks if recieved character in "RPS"
                 *other_selection = received;
@@ -56,7 +56,7 @@ void selection_loop(char* player_selection, char* other_selection)
                 game_lost();
             }
         }
-        
+
         pacer_wait();
         tinygl_update();
         navswitch_update();
@@ -125,11 +125,11 @@ int find_winner(char* player_selection, char* other_selection)
 
 /**
  * Description: Displays the result of the round as output and updates
- * 				the player's score if required.
+ *              the player's score if required.
  * @param result: an integer 0, 1 or 2 to represent a Loss, Tie or Win.
- * 				  Same as output from find_winner.
- * @param score: A pointer to the player's total score, updated in place 
- * 				 where appropriate.
+ *                Same as output from find_winner.
+ * @param score: A pointer to the player's total score, updated in place
+ *               where appropriate.
  * */
 void display_winner(int result, int* score)
 {
@@ -154,9 +154,9 @@ void display_winner(int result, int* score)
 }
 
 /**
- * Description: Displays the current player's score as output. 
- * 				Assumed that score <= MAX_SCORE < 10 so that 
- * 				'0' + *score gives the correct character.
+ * Description: Displays the current player's score as output.
+ *              Assumed that score <= MAX_SCORE < 10 so that
+ *              '0' + *score gives the correct character.
  * @param score: A pointer to the score value to be displayed
  * */
 void display_score(int* score)
@@ -178,9 +178,9 @@ void display_score(int* score)
 void game_won(void)
 {
     tinygl_text_speed_set(10);
-	ir_uart_putc('L');
-	tinygl_text("You won!\0");
-	led_set(LED1, 1);
+    ir_uart_putc('L');
+    tinygl_text("You won!\0");
+    led_set(LED1, 1);
     while(1)
     {
         pacer_wait();

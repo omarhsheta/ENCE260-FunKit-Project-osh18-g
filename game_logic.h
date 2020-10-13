@@ -21,7 +21,7 @@
 void display_character (char character);
 
 /**
- * Description: It is a loop where the player selects either Rock, Papper,
+ * Description: It is a loop where the player selects either Rock, Paper,
  *              Scissors. Once they select, it locks and blue LED light
  *              lights up to indicate that the player has made their
  *              selection, and waits for the other player to make their
@@ -33,37 +33,37 @@ void selection_loop(char* player_selection, char* other_selection);
 
 /**
  * Description: Evaluates if the current round is a Win/Loss/Tie
- * @param player_selection: The current player's selection
- * @param other_selection: The other player's selection
- * @return an integer that is either 0,1,2 to indicate whether it is
+ * @param player_selection: The current player's selection (in "RPS")
+ * @param other_selection: The other player's selection (in "RPS")
+ * @return an integer that is either 0,1 or 2 to indicate a
  *         Loss/Tie/Win respectively
  * */
 int find_winner(char* player_selection, char* other_selection);
 
 /**
- * Description: Using find_winner(char* player_selection, char* other_selection),
- *              it can indicate on LED matrix if it is a Win/Loss/Tie
- * @param result: find_winner(char* player_selection, char* other_selection) is passed onto it
- * @param score: the current player's score
+ * Description: Displays the result of the round as output and updates
+ *              the player's score if required.
+ * @param result: an integer 0, 1 or 2 to represent a Loss, Tie or Win.
+ *                Same as output from find_winner.
+ * @param score: A pointer to the player's total score, updated in place
+ *               where appropriate.
  * */
 void display_winner(int result, int* score);
 
 /**
- * Description: Displays the current player's score
- * @param score: It is the current player's score
+ * Description: Displays the current player's score as output.
+ *              Assumed that score <= MAX_SCORE < 10 so that
+ *              '0' + *score gives the correct character.
+ * @param score: A pointer to the score value to be displayed
  * */
 void display_score(int* score);
 
 /**
- * Description: Blocking code where it displays whether the player
- *              won or lost
- * @param score: Player's score
- * @param max_score: Max score for comparison
+ * Description: Endlessly displays a victory message
  * */
-void game_won(int score, int max_score);
+void game_won(void);
 
 /**
- * Description: It is only true if the other player wins
- * @return returns 0 or 1, only ever returns 1 if the other player wins
+ * Description: Endlessly displays a defeat message
  * */
-bool game_lost(void);
+void game_lost(void);
