@@ -15,6 +15,16 @@
 #include "led.h"
 
 /**
+ * Description: Endlessly displays a victory message
+ * */
+void game_won(void);
+
+/**
+ * Description: Endlessly displays a defeat message
+ * */
+void game_lost(void);
+
+/**
  * Description: The function displays an individual character only
  * @param character:
  * */
@@ -58,12 +68,3 @@ void display_winner(int result, int* score);
  * */
 void display_score(int* score);
 
-/**
- * Description: Endlessly displays a victory message
- * */
-void game_won(void);
-
-/**
- * Description: Endlessly displays a defeat message
- * */
-void game_lost(void);

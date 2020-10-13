@@ -14,8 +14,35 @@
 #include "pacer.h"
 #include "led.h"
 
-void game_won(void);
+/**
+ * Description: Endlessly displays a victory message
+ * */
+void game_won(void)
+{
+    tinygl_text_speed_set(10);
+    ir_uart_putc('L');
+    tinygl_text("You won!\0");
+    led_set(LED1, 1);
+    while(1)
+    {
+        pacer_wait();
+        tinygl_update();
+    }
+}
 
+/**
+ * Description: Endlessly displays a defeat message
+ * */
+void game_lost(void)
+{
+    tinygl_text_speed_set(10);
+    tinygl_text("You lost!\0");
+    while(1)
+    {
+        pacer_wait();
+        tinygl_update();
+    }
+}
 /**
  * Description: The function displays an individual character only
  * @param character:
@@ -170,34 +197,4 @@ void display_score(int* score)
         counter++;
     }
     led_set(LED1, 0);
-}
-
-/**
- * Description: Endlessly displays a victory message
- * */
-void game_won(void)
-{
-    tinygl_text_speed_set(10);
-    ir_uart_putc('L');
-    tinygl_text("You won!\0");
-    led_set(LED1, 1);
-    while(1)
-    {
-        pacer_wait();
-        tinygl_update();
-    }
-}
-
-/**
- * Description: Endlessly displays a defeat message
- * */
-void game_lost(void)
-{
-    tinygl_text_speed_set(10);
-    tinygl_text("You lost!\0");
-    while(1)
-    {
-        pacer_wait();
-        tinygl_update();
-    }
 }
