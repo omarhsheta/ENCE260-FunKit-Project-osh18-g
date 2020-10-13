@@ -1,11 +1,12 @@
 Authors: Omar Sheta (osh18) and George Holden (gah83)
+
 Date: 13 Oct 2020
+
 Description: Rock, Paper, Scissors game
 
 Initializing gameplay:
+
     1- The game will display a message saying "Press when ready!"
-    
-    
     2- Once the player presses on the middle button of the navigation switch,
        The funkit will display a message saying "Waiting for player" while
        the blue LED light lights up.
@@ -13,6 +14,7 @@ Initializing gameplay:
     
 
 Gameplay
+
     1- The character 'R' (for Rock) will be displayed on the funkit, you can 
        toggle up/down for other characters; 'S' for Scissors, and 'P' for Paper.
     2- Once the player have selected their character, the blue LED light 
