@@ -4,6 +4,8 @@ Description: Rock, Paper, Scissors game
 
 Initializing gameplay:
     1- The game will display a message saying "Press when ready!"
+    
+    
     2- Once the player presses on the middle button of the navigation switch,
        The funkit will display a message saying "Waiting for player" while
        the blue LED light lights up.
