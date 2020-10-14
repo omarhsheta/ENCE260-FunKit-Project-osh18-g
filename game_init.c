@@ -2,8 +2,8 @@
  * File:   game_init.c
  * Author: Omar Sheta (osh18) and George Holden (gah83)
  * Date:   13 Oct 2020
- * Descr:  Contains functions that handle the initialisation of other 
- * 		   modules and the initial setup phase of the game.
+ * Descr:  Contains functions that handle the initialisation of other
+ *         modules and the initial setup phase of the game.
  * */
 #include <stdbool.h>
 #include "navswitch.h"
@@ -16,7 +16,7 @@
 
 /**
  * Description: this function initialises all other modules used throughout
- * 				the program and sets some basic tinygl options.
+ *              the program and sets some basic tinygl options.
  * @param message_rate: an integer to be passed as the tinygl_text_speed
  * @param pacer_rate: an integer used to set the pacer rate
  * */
@@ -41,8 +41,8 @@ void setup_all(int message_rate, int pacer_rate)
 void inital_loop(void)
 {
     tinygl_text("Press when ready!\0");
-    bool ready = false;
-    bool player_ready = false;
+    bool ready = false; //Is true when player is ready
+    bool player_ready = false; //Is true when 2nd player is ready
     while(!ready)
     {
         pacer_wait();
@@ -56,7 +56,7 @@ void inital_loop(void)
     }
 
     tinygl_text("Waiting for player\0");
-    led_set(LED1, 1);
+    led_set(LED1, 1); //Turns on the blue LED
     while (!player_ready)
     {
         pacer_wait();
@@ -64,8 +64,8 @@ void inital_loop(void)
         if (ir_uart_read_ready_p()) {
             if (ir_uart_getc() == '1') {
                 player_ready = true;
-                led_set(LED1, 0);
-                tinygl_text_speed_set(2);
+                led_set(LED1, 0); //Turns off the blue LED
+                tinygl_text_speed_set(2); //fixes the jitter bug with TinyGL
             }
         }
     }
